@@ -1,0 +1,48 @@
+﻿
+@model IEnumerable<BusModelSummaryDTO>
+
+<h1 class="pb-3 mb-3 border-bottom">
+    Modeller
+</h1>
+<div class="row">
+    <div class="col-12 col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Model Adı</th>
+                    <th>Marka</th>
+                    <th>Türü</th>
+                    <th>Kapasite</th>
+                    <th>Tuvalet Var</th>
+                    <th>
+                        <div class="float-right mb-3">
+                            <a class="btn btn-sm btn-info" asp-action="Create" asp-controller="BusModel">Yeni Model</a>
+                        </div>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var busModel in Model)
+                {
+                    <tr>
+                        <td>@busModel.Id</td>
+                        <td>@busModel.Name</td>
+                        <td>@busModel.ManufacturerName</td>
+                        <td>@busModel.Type</td>
+                        <td>@busModel.SeatCapacity</td>
+                        <td>@busModel.HasToilet</td>
+                        <td>
+                            <div class="float-right">
+                                <a class="btn btn-outline-dark btn-sm" asp-controller="BusModel" asp-action="Update" asp-route-id="@busModel.Id">Düzenle</a>
+                                <a class="btn btn-outline-danger btn-sm" asp-controller="BusModel" asp-action="Delete" asp-route-id="@busModel.Id">Sil</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

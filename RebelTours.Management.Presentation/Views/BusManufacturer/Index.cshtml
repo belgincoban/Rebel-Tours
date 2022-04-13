@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BusManufacturerDTO>
+
+    <h1 class="pb-3 mb-3 border-bottom">
+        Markalar
+    </h1>
+    <div class="col-12 col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Marka Adı</th>
+                    <th>
+                        <div class="float-right mb-3">
+                            <a class="btn btn-sm btn-info" asp-action="Create" asp-controller="BusManufacturer">Yeni Marka</a>
+                        </div>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entity in Model)
+                {
+                <tr>
+                    <td>@entity.Id</td>
+                    <td>@entity.Name</td>
+                    <td>
+                        <div class="float-right">
+                            <a class="btn btn-outline-dark btn-sm" asp-controller="BusManufacturer" asp-action="Update" asp-route-id="@entity.Id">Düzenle</a>
+                            <a class="btn btn-outline-danger btn-sm" asp-controller="BusManufacturer" asp-action="Delete" asp-route-id="@entity.Id">Sil</a>
+                        </div>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+    </div>

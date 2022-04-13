@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RebelTours.Management.Application\RebelTours.Management.Application.csproj" />
+    <ProjectReference Include="..\RebelTours.Persistence\RebelTours.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

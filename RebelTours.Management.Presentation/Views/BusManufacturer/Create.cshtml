@@ -1,0 +1,38 @@
+﻿
+@model BusManufacturerDTO
+
+<h1 class="pb-3 mb-3 border-bottom">
+    Marka Kaydet
+</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert-danger alert">
+                @ViewBag.ErrorMessage
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-12 col-sm-8 col-md-6">
+        <form method="post" asp-action="Create" asp-controller="BusManufacturer">
+            <div class="mb-3">
+                <label asp-for="Name">Marka Adı</label>
+                <input type="text" asp-for="Name" class="form-control" autocomplete="off" />
+            </div>
+            <div class="float-right">
+
+                <button type="submit" class="btn btn-primary">
+                    Kaydet
+                </button>
+                <a class="btn btn-secondary" asp-controller="BusManufacturer" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+

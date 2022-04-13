@@ -1,0 +1,41 @@
+﻿
+@model IEnumerable<StationSummary>
+
+    <h1 class="pb-3 mb-3 border-bottom">
+       İstasyonlar
+    </h1>
+<div class="row">
+    <div class="col-12 col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>İstasyon Adı</th>
+                    <th>Şehir</th>
+                    <th>
+                        <div class="float-right mb-3">
+                            <a class="btn btn-sm btn-info" asp-action="Create" asp-controller="Station">Yeni İstasyon</a>
+                        </div>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var station in Model)
+                {
+                    <tr>
+                        <td>@station.Id</td>
+                        <td>@station.Name</td>
+                        <td>@station.CityName</td>
+                        <td>
+                            <div class="float-right">
+                                <a class="btn btn-outline-dark btn-sm" asp-controller="Station" asp-action="Update" asp-route-id="@station.Id">Düzenle</a>
+                                <a class="btn btn-outline-danger btn-sm" asp-controller="Station" asp-action="Delete" asp-route-id="@station.Id">Sil</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model BusModelDTO
+<div class="">
+    <h1 class="pb-3 mb-3 border-bottom">
+        Model Güncelle
+    </h1>
+</div>
+<div class="row">
+    <div class="col-12 col-md-8 col-sm-4">
+        <form asp-action="Update" asp-controller="BusModel">
+            <label class="form-label" for="Name">Model Adı</label>
+            <input type="text" name="Name" class="form-control mb-3" value="@Model.Name" />
+
+            @*<div class="mb-3">
+            <label asp-for="BusManufacturerId">Marka</label>
+            <select asp-for="BusManufacturerId" asp-items="ViewBag.models" class="form-control"></select>
+        </div>
+
+        <label class="form-label mb-3" for="BusType">Türü</label>
+        <select asp-for="Type" asp-itTems="@Html.GetEnumSelectList<BusType>()" class="form-control mb-3" ></select>
+
+        <label class="form-label" for="SeatCapacity">Kapasitesi</label>
+        <input type="text" name="SeatCapacity" class="form-control mb-3" value="@Model.SeatCapacity"  />
+
+        <label class="form-label mb-3" for="HasToilet"></label>
+        <input type="text" name="HasToilet" class="form-control mb-3" />
+            *@
+
+            <div class="mb-3 float-right">
+                <button type="submit" class="btn btn-success">Kaydet</button>
+
+                <a class="btn btn-secondary" asp-controller="BusModel" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>

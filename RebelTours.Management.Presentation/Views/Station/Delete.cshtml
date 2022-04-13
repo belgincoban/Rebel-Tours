@@ -1,0 +1,36 @@
+﻿
+@model StationDTO
+
+<h1 class="pb-3 mb-3 border-bottom">
+    Şehir Sil
+</h1>
+<div class="row">
+    <div class="col-12 col-md-8 col-sm-6">
+        <div class="alert alert-warning">
+            Dikkat! Onayladığınızda bu kayıt silinecek.
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-sm-8 col-md-6">
+        <form method="post" asp-action="Delete" asp-controller="Station">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label>İstasyon Adı</label>
+                <div class="form-control" autocomplete="off">
+                    @Model.Name
+                </div>
+            </div>
+            <div class="float-right">
+
+                <button type="submit" class="btn btn-warning">
+                    Onayla
+                </button>
+                <a class="btn btn-success" asp-controller="Station" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

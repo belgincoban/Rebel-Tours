@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebelTours.Domain", "RebelTours.Domain\RebelTours.Domain.csproj", "{85AB709B-319A-4531-97FF-C81ECDDA0640}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebelTours.Persistence", "RebelTours.Persistence\RebelTours.Persistence.csproj", "{C34FCEB7-FF4F-48CF-B16E-EE8FCF8B9192}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebelTours.Management.DataAccess", "RebelTours.Management.DataAccess\RebelTours.Management.DataAccess.csproj", "{3CBBA77C-DF8F-4CAB-9B88-0956F2BC280E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebelTours.Management.Application", "RebelTours.Management.Application\RebelTours.Management.Application.csproj", "{77DAF251-E890-42C7-8C4C-E7C54D45960E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RebelTours.Management.Presentation", "RebelTours.Management.Presentation\RebelTours.Management.Presentation.csproj", "{4935E198-B22A-4272-8608-DC53E39B7E1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RebelTours", "RebelTours\RebelTours.csproj", "{D661E97F-C728-4E6E-9A41-3C7B6F66DD8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85AB709B-319A-4531-97FF-C81ECDDA0640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85AB709B-319A-4531-97FF-C81ECDDA0640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85AB709B-319A-4531-97FF-C81ECDDA0640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85AB709B-319A-4531-97FF-C81ECDDA0640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C34FCEB7-FF4F-48CF-B16E-EE8FCF8B9192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C34FCEB7-FF4F-48CF-B16E-EE8FCF8B9192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C34FCEB7-FF4F-48CF-B16E-EE8FCF8B9192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C34FCEB7-FF4F-48CF-B16E-EE8FCF8B9192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CBBA77C-DF8F-4CAB-9B88-0956F2BC280E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CBBA77C-DF8F-4CAB-9B88-0956F2BC280E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CBBA77C-DF8F-4CAB-9B88-0956F2BC280E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CBBA77C-DF8F-4CAB-9B88-0956F2BC280E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77DAF251-E890-42C7-8C4C-E7C54D45960E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77DAF251-E890-42C7-8C4C-E7C54D45960E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77DAF251-E890-42C7-8C4C-E7C54D45960E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77DAF251-E890-42C7-8C4C-E7C54D45960E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4935E198-B22A-4272-8608-DC53E39B7E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4935E198-B22A-4272-8608-DC53E39B7E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4935E198-B22A-4272-8608-DC53E39B7E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4935E198-B22A-4272-8608-DC53E39B7E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D661E97F-C728-4E6E-9A41-3C7B6F66DD8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D661E97F-C728-4E6E-9A41-3C7B6F66DD8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D661E97F-C728-4E6E-9A41-3C7B6F66DD8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D661E97F-C728-4E6E-9A41-3C7B6F66DD8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B613245F-A5E3-4F8C-A9FA-0F28192B8A65}
+	EndGlobalSection
+EndGlobal

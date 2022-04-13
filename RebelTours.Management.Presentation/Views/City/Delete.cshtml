@@ -1,0 +1,39 @@
+﻿
+@model CityDTO
+    <h1 class="pb-3 mb-3 border-bottom">
+        Şehir Sil
+    </h1>
+
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert alert-warning">
+                Dikkat! Onayladığınızda bu kayıt silinecek.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <form method="post" asp-action="Delete" asp-controller="City">
+                <input type="hidden" asp-for="Id" />
+
+                @*<input type="hidden" id="Id" name="Id" value="@Model.Id" />*@
+                @*@Html.HiddenFor(m => m.Id)*@
+
+                <div class="mb-3">
+                    <label>Şehir Adı</label>
+                    <div class="form-control" autocomplete="off">
+                        @Model.Name
+                    </div>
+                </div>
+                <div class="float-right">
+
+                    <button type="submit" class="btn btn-warning">
+                        Onayla
+                    </button>
+                    <a class="btn btn-primary" asp-controller="City" asp-action="Index">
+                        İptal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>

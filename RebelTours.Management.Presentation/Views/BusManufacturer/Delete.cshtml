@@ -1,0 +1,35 @@
+﻿
+@model BusManufacturerDTO
+<h1 class="pb-3 mb-3 border-bottom">
+    Marka Sil
+</h1>
+
+<div class="row">
+    <div class="col-12 col-sm-8 col-md-6">
+        <div class="alert alert-warning">
+            Dikkat! Onayladığınızda bu kayıt silinecek.
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-sm-8 col-md-6">
+        <form method="post" asp-action="Delete" asp-controller="BusManufacturer">
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label>Marka Adı</label>
+                <div class="form-control" autocomplete="off">
+                    @Model.Name
+                </div>
+            </div>
+            <div class="float-right">
+
+                <button type="submit" class="btn btn-warning">
+                    Onayla
+                </button>
+                <a class="btn btn-primary" asp-controller="BusManufacturer" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
