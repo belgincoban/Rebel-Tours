@@ -1,46 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RebelTours.Domain
 {
     public class Bus
     {
-        public Bus(int id, int busModelId, string registrationPlate, short year,int seatCount, SeatingType seatMapping,int distanceTraveled)
+        public Bus(
+            int busId,
+            int busModelId,
+            string registrationPlate,
+            short year,
+            SeatingType seatMapping,
+            int distanceTraveled)
         {
-            Id = id;
+            BusId = busId;
             BusModelId = busModelId;
             RegistrationPlate = registrationPlate;
-            SeatMapping = seatMapping;
-            SeatCount = seatCount;
             Year = year;
+            SeatMapping = seatMapping;
             DistanceTraveled = distanceTraveled;
         }
-        public int Id { get; set; }
-        public int BusModelId { get; }
+
+        public int BusId { get; set; }
+
         public string RegistrationPlate { get; }
-        public short Year { get;}
+
+        public short Year { get; }
         public SeatingType SeatMapping { get; set; }
-        public int SeatCount { get; set; }
-         
-            //get
-            //{
-            //    if (BusModel.Type == BusType.Coach)
-            //    {
-            //        if (BusModel.SeatCapacity == 52)
-            //        {
-            //            var SeatCapacityCount =
 
-            //            if (true)
-            //            {
+        public int SeatCount
+        {
+            get
+            {
+                return BusModel.SeatTemplate.GetSeatCount(SeatMapping);
+            }
+        }
 
-            //            }
-            //        }
-            //    }
-            //} 
-        
         public int DistanceTraveled { get; set; }
+
+        public int BusModelId { get; }
+
         public BusModel BusModel { get; set; }
 
     }
+
 }
+

@@ -4,13 +4,8 @@ using System.Text;
 
 namespace RebelTours.Management.Application.BusModels
 {
-    public interface IBusModelService
+    public interface IBusModelService:IService<BusModelDTO,BusModelSummaryDTO>
     {
-        BusModelDTO GetById(int id);
-        IEnumerable<BusModelDTO> GetAll();
-        IEnumerable<BusModelSummaryDTO> GetSummaries();
-        void Create(BusModelDTO modelDTO);
-        void Update(BusModelDTO modelDTO);
-        void Delete(BusModelDTO modelDTO);
+
     }
 }

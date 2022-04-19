@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using RebelTours.Management.Application.Cities;
 using RebelTours.Management.Application.Stations;
 using System;
@@ -39,8 +40,36 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Create(StationDTO stationDTO)
         {
-            _stationService.Create(stationDTO);
-            return RedirectToAction("Index");
+            var result = _stationService.Create(stationDTO);
+
+            if (result.IsSucceeded)
+            {
+                //TempData["SuccessMessage"] = "Kaydetme başarılı";
+
+                // JSON
+                // JavaScript Object Notation
+
+                // Serialize => Stringleştirme
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
+
+                // Aaşağıdaki gibi bir Extension metot yazılarak Json serialize etme işlemi
+                // pratikleştirilebilir
+                // TempData.Set("CommandResult", result);
+
+                return RedirectToAction("Index", "Station", new { redirected = true });
+            }
+            else
+            {
+                //ViewBag.ErrorMessage = "Kaydetme sırasında bir hata meydana geldi";
+
+                var cities = _cityService.GetAll();
+
+                ViewBag.Cities = new SelectList(cities, "Id", "Name");
+                ViewBag.CommandResult = result;
+
+                return View(stationDTO);
+            }
         }
        
         public IActionResult Update(int id)
@@ -53,12 +82,20 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Update(StationDTO stationDTO)
         {
-            if (stationDTO != null)
+            var result=_stationService.Update(stationDTO);
+            if (result.IsSucceeded)
             {
-                _stationService.Update(stationDTO);
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
                 return RedirectToAction("Index");
+
             }
-            return Content("Hatalı işlem");
+            else
+            {
+                var cities = _cityService.GetAll();
+                ViewBag.Cities = new SelectList(cities, "Id", "Name");
+                return View();
+            }
         }
         public IActionResult Delete(int id)
         {
@@ -69,11 +106,20 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Delete(StationDTO station)
         {
-            if (station != null)
+            var result=_stationService.Delete(station);
+
+            if (result.IsSucceeded)
             {
-                _stationService.Delete(station);
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.CommandResult = result;
+                return View();
+            }
+
 
         }
     }

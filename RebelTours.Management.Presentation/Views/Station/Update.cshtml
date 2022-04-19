@@ -1,7 +1,21 @@
-﻿@model StationDTO
-    <h1 class="pb-3 mb-3 border-bottom">
-        İstasyon Güncelle
-    </h1>
+﻿@using RebelTours.Management.Application
+@model StationDTO
+<h1 class="pb-3 mb-3 border-bottom">
+    İstasyon Güncelle
+</h1>
+
+@if (ViewBag.CommandResult != null)
+{
+    var result = (CommandResult)ViewBag.CommandResult;
+
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert @(result.IsSucceeded ? "alert-success" : "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
 <div class="row">
     <div class="col-12 col-md-8 col-md-6">
         <form method="post">
@@ -11,7 +25,7 @@
                 <input type="text" asp-for="Name" class="form-control" value="@Model.Name" />
             </div>
 
-            <div class="mb-3"> 
+            <div class="mb-3">
                 <label asp-for="CityId">Şehir</label>
                 <select asp-for="CityId" asp-items="ViewBag.Cities" class="form-control"></select>
             </div>

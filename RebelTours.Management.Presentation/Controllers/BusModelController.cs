@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using RebelTours.Management.Application.BusManufacturers;
 using RebelTours.Management.Application.BusModels;
 using System;
@@ -31,32 +32,50 @@ namespace RebelTours.Management.Presentation.Controllers
         }
         public IActionResult Create()
         {
-            var manufacturies = _manufacturerService.GetAll();
-            ViewBag.manufacturies = new SelectList(manufacturies, "Id", "Name");
+            var manufacturers = _manufacturerService.GetAll();
+            ViewBag.Manufacturers = new SelectList(manufacturers, "Id", "Name");
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(BusModelDTO modelDTO)
         {
-            _busModelService.Create(modelDTO);
-            return RedirectToAction("Index");
+            var result=_busModelService.Create(modelDTO);
+            if (result.IsSucceeded)
+            {
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var manufacturers = _manufacturerService.GetAll();
+                ViewBag.Manufacturers = new SelectList(manufacturers, "Id", "Name");
+                ViewBag.CommandResult = result;
+
+                return View(modelDTO);
+            }
         }
         public IActionResult Update(int id)
         {
             var model = _busModelService.GetById(id);
-            //ViewBag.models = new SelectList( "Id", "Name");
             return View(model);
         }
         [HttpPost]
         public IActionResult Update(BusModelDTO modelDTO)
         {
-            if (modelDTO != null)
+            var result=_busModelService.Update(modelDTO);
+            if (result.IsSucceeded)
             {
-                _busModelService.Update(modelDTO);
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
                 return RedirectToAction("Index");
             }
-            return Content("Hatalı işlem");
+            else
+            {
+                ViewBag.CommandResult = result;
+                return View();
+            }
         }
 
         public IActionResult Delete(int id)
@@ -68,12 +87,19 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Delete(BusModelDTO modelDTO)
         {
-            if (modelDTO!=null)
-            {
-                _busModelService.Delete(modelDTO);
+            var result=_busModelService.Delete(modelDTO);
 
+            if (result.IsSucceeded)
+            {
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.CommandResult = result;
+                return View();
+            }
         }
     }
 }

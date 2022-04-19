@@ -1,6 +1,20 @@
-﻿
+﻿@using Newtonsoft.Json
 @model IEnumerable<BusModelSummaryDTO>
 
+
+@if (TempData["CommandResult"] != null)
+{
+    var resultJson = (string)TempData["CommandResult"];
+    var result = JsonConvert.DeserializeObject<CommandResult>(resultJson);
+
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="alert @(result.IsSucceeded ? "alert-success": "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
 <h1 class="pb-3 mb-3 border-bottom">
     Modeller
 </h1>
@@ -14,7 +28,7 @@
                     <th>Marka</th>
                     <th>Türü</th>
                     <th>Kapasite</th>
-                    <th>Tuvalet Var</th>
+                    <th>WC</th>
                     <th>
                         <div class="float-right mb-3">
                             <a class="btn btn-sm btn-info" asp-action="Create" asp-controller="BusModel">Yeni Model</a>
@@ -29,10 +43,10 @@
                     <tr>
                         <td>@busModel.Id</td>
                         <td>@busModel.Name</td>
-                        <td>@busModel.ManufacturerName</td>
+                        <td>@busModel.BusManufacturerName</td>
                         <td>@busModel.Type</td>
                         <td>@busModel.SeatCapacity</td>
-                        <td>@busModel.HasToilet</td>
+                        <td>@busModel.HasToiletString</td>
                         <td>
                             <div class="float-right">
                                 <a class="btn btn-outline-dark btn-sm" asp-controller="BusModel" asp-action="Update" asp-route-id="@busModel.Id">Düzenle</a>

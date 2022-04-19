@@ -1,9 +1,62 @@
-﻿
+﻿@using Newtonsoft.Json
+@using RebelTours.Management.Application
 @model IEnumerable<StationSummary>
 
-    <h1 class="pb-3 mb-3 border-bottom">
-       İstasyonlar
-    </h1>
+@if (TempData["CommandResult"] != null)
+{
+    var resultJson = (string)TempData["CommandResult"];
+    var result = JsonConvert.DeserializeObject<CommandResult>(resultJson);
+
+    // Aaşağıdaki gibi bir Extension metot yazılarak Json deserialize etme işlemi
+    // pratikleştirilebilir
+    // var result = TempData.Get<CommandResult>("CommandResult");
+
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="alert @(result.IsSucceeded ? "alert-success": "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    // TempData üzerinde taşınan bir anahtar kelime karşılığındaki verinin ömrü,
+    // o anahtar kelimedeki veri okunana kadardır
+    // Eğer veri hiç okunmazsa TempData üzerindeki o anahtar değer ve verisi muhafaza edilir.
+
+    // Veri en az bir kez okunduğunda o anahtar kelime ve değeri TempData'dan silinmek üzere işaretlenir
+    // Ve Response tamamlandıktan sonra anahtar ve değer silinir
+
+    // Verinin okunması, get edilmesine örnek aşağıdaki kod
+    //var message = TempData["SuccessMessage"];
+
+    <div class="alert alert-success">
+        @*
+            HTML içerisine Razor expression yazarak TempData verisini görüntülemek de
+            TempData verisinin okunması anlamına gelir
+        *@
+        @TempData["SuccessMessage"]
+        @*@TempData.Peek("SuccessMessage")*@
+        @*
+            Peek(key) => Veriyi okuduktan sonra silinmek üzere işaretlenmesini istemiyorsan
+                bu metot aracılığı ile okuyabilirsin
+
+            Keep(key) => Veriyi normal yöntemle okuduktan sonra saklanmasını istiyorsanız
+                bu metodu çağırabilirsiniz
+        *@
+
+        @{
+            //TempData.Keep("SuccessMessage");
+        }
+
+    </div>
+}
+
+<h1 class="pb-3 mb-3 border-bottom">
+    İstasyonlar
+</h1>
 <div class="row">
     <div class="col-12 col-md-8">
         <table class="table table-striped">

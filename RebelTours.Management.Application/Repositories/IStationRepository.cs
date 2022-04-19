@@ -5,12 +5,8 @@ using System.Text;
 
 namespace RebelTours.Management.Application.Repositories
 {
-   public interface IStationRepository
+   public interface IStationRepository:IRepository<Station>
     {
-        IEnumerable<Station> GetAll(bool includeCity=false);
-        Station Find(int id);
-        void Update(Station station);
-        void Add(Station station);
-        void Remove(Station station);
+        //IRepository de sınıfında yazmadığın ek bir metodu burda belirtirsin.
     }
 }

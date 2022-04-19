@@ -5,12 +5,8 @@ using System.Text;
 
 namespace RebelTours.Management.Application.Repositories
 {
-    public interface IBusManufacturerRepository
+    public interface IBusManufacturerRepository:IRepository<BusManufacturer>
     {
-        IEnumerable<BusManufacturer> GetAll();
-        void Add(BusManufacturer busManufacturer);
-        BusManufacturer Find(int id);
-        void Update(BusManufacturer busManufacturer);
-        void Remove(BusManufacturer busManufacturer);
+
     }
 }

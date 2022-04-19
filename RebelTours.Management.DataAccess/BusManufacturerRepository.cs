@@ -1,5 +1,6 @@
 ﻿using RebelTours.Domain;
 using RebelTours.Management.Application.Repositories;
+using RebelTours.Management.DataAccess.Extensions;
 using RebelTours.Persistence;
 using System;
 using System.Collections.Generic;
@@ -22,16 +23,20 @@ namespace RebelTours.Management.DataAccess
             _context.SaveChanges();
         }
 
-        public BusManufacturer Find(int id)
+        public BusManufacturer Find(int id, params string[] includings)
         {
-            var busManufacturer= _context.BusManufacturers.Find(id);
-            return busManufacturer;
+            var dbQuery = _context.BusManufacturers.AsQueryable();
+            dbQuery = dbQuery.IncludeMultiple(includings);
+
+            return dbQuery.SingleOrDefault(entity => entity.Id == id);
         }
 
-        public IEnumerable<BusManufacturer> GetAll()
+        public IEnumerable<BusManufacturer> GetAll(params string[] includings)
         {
-            
-            return _context.BusManufacturers.ToList();
+
+            var dbQuery = _context.BusManufacturers.AsQueryable();
+            dbQuery = dbQuery.IncludeMultiple(includings);
+            return dbQuery.ToList();
         }
 
         public void Remove(BusManufacturer busManufacturer)

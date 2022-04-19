@@ -1,0 +1,47 @@
+﻿@model BusDTO
+
+<div class="">
+    <h1 class="pb-3 mb-3 border-bottom">
+        Otobüs Güncelle
+    </h1>
+</div>
+@if (ViewBag.CommandResult != null)
+{
+    var result = (CommandResult)ViewBag.CommandResult;
+
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert @(result.IsSucceeded ? "alert-success" : "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+
+    <div class="col-12 col-md-8 col-sm-5">
+        <form method="post" asp-action="Update" asp-controller="Bus">
+            <input type="hidden" asp-for="BusId" />
+
+            <div class="mb-3">
+                <label asp-for="SeatMapping">Otobüs Tipi</label>
+                <select class="form-control" asp-for="SeatMapping" asp-items="@Html.GetEnumSelectList<SeatingType>()"></select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DistanceTraveled">KM</label>
+                <input asp-for="DistanceTraveled" class="form-control" type="number" autocomplete="off" />
+            </div>
+
+            <div class="mb-3 float-right">
+                <button type="submit" class="btn btn-success">Kaydet</button>
+
+                <a class="btn btn-secondary" asp-controller="Bus" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>

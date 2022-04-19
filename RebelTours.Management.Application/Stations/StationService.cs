@@ -30,7 +30,7 @@ namespace RebelTours.Management.Application.Stations
 
         public IEnumerable<StationSummary> GetSummaries()
         {
-            var stationEntities = _stationRepository.GetAll(true);
+            var stationEntities = _stationRepository.GetAll("City");
             var stationsSummaries = new List<StationSummary>();
             foreach (var entity in stationEntities)
             {
@@ -64,37 +64,86 @@ namespace RebelTours.Management.Application.Stations
             }
         }
 
-        public void Create(StationDTO stationDTO)
+        public CommandResult Create(StationDTO stationDTO)
         {
-            var station = new Station()
+            try
             {
-                Id = stationDTO.Id,
-                Name = stationDTO.Name,
-                CityId = stationDTO.CityId
-            };
-            _stationRepository.Add(station);
-        }
+                if (string.IsNullOrWhiteSpace(stationDTO.Name))
+                {
+                    return CommandResult.Error("İsim boş geçilemez");
+                }
 
-        public void Update(StationDTO stationDTO)
-        {
-            var station = _stationRepository.Find(stationDTO.Id);
-            station.Name = stationDTO.Name;
-            station.CityId = stationDTO.CityId;
-            _stationRepository.Update(station);
-        }
-
-        public void Delete(StationDTO stationDTO)
-        {
-            if (stationDTO != null)
-            {
-                var station = new Station()
+                var stationEntity = new Station()
                 {
                     Id = stationDTO.Id,
                     Name = stationDTO.Name,
                     CityId = stationDTO.CityId
                 };
-                _stationRepository.Remove(station);
+                _stationRepository.Add(stationEntity);
+
+                return CommandResult.Success(MessageProvider.CreateSuccessMessage);
+
             }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                   MessageProvider.CreateErrorMessage,
+                   ex.Message);
+            }
+
+        }
+
+        public CommandResult Update(StationDTO stationDTO)
+        {
+            try
+            {
+                var station = _stationRepository.Find(stationDTO.Id);
+                station.Name = stationDTO.Name;
+                station.CityId = stationDTO.CityId;
+
+                _stationRepository.Update(station);
+
+                return CommandResult.Success(MessageProvider.UpdateSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                    MessageProvider.UpdateErrorMessage,
+                    ex.Message);
+            }
+
+        }
+
+        public CommandResult Delete(StationDTO stationDTO)
+        {
+            try
+            {
+                if (stationDTO != null)
+                {
+                    var station = new Station()
+                    {
+                        Id = stationDTO.Id,
+                        Name = stationDTO.Name,
+                        CityId = stationDTO.CityId
+                    };
+
+                    _stationRepository.Remove(station);
+
+                    return CommandResult.Success(MessageProvider.DeleteSuccessMessage);
+                }
+                else
+                {
+                    return CommandResult.Error("Silinecek istasyon bulunamadı");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                   MessageProvider.DeleteErrorMessage,
+                   ex.Message);
+            }
+           
         }
     }
 }

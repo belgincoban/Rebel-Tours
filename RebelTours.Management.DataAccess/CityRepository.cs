@@ -17,7 +17,7 @@ namespace RebelTours.Management.DataAccess
             dbContext.SaveChanges();
         }
 
-        public IEnumerable<City> GetAll()
+        public IEnumerable<City> GetAll(params string[] includings)
         {
             //veritabanına erişim sağlıyorum bu sınıfla.
            
@@ -25,7 +25,7 @@ namespace RebelTours.Management.DataAccess
             return dbContext.Cities.ToList();
         }
 
-        public City Find(int id)
+        public City Find(int id, params string[] includings)
         {
             var dbContext = new RebelToursDbContext();
             var city=dbContext.Cities.Find(id);

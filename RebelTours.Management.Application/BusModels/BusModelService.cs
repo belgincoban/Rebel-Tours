@@ -15,20 +15,6 @@ namespace RebelTours.Management.Application.BusModels
         {
             _busModel = busModel;
         }
-        public void Create(BusModelDTO modelDTO)
-        {
-            var busModel = new BusModel(modelDTO.Id, modelDTO.Name, modelDTO.BusManufacturerId, modelDTO.Type, modelDTO.SeatCapacity, modelDTO.HasToilet);
-            _busModel.Add(busModel);
-        }
-
-        public void Delete(BusModelDTO modelDTO)
-        {
-            if (modelDTO != null)
-            {
-                var busModel = new BusModel(modelDTO.Id, modelDTO.Name, modelDTO.BusManufacturerId, modelDTO.Type, modelDTO.SeatCapacity, modelDTO.HasToilet);
-                _busModel.Remove(busModel);
-            }
-        }
 
         public IEnumerable<BusModelDTO> GetAll()
         {
@@ -71,29 +57,85 @@ namespace RebelTours.Management.Application.BusModels
 
         public IEnumerable<BusModelSummaryDTO> GetSummaries()
         {
-            var busModel = _busModel.GetAll(true);
-            var modelSummaries = new List<BusModelSummaryDTO>();
-            foreach (var entity in busModel)
+            var busModel = _busModel.GetAll("BusManufacturer");
+            var busModels = busModel.Select(entity => new BusModelSummaryDTO
             {
-                modelSummaries.Add(new BusModelSummaryDTO()
-                {
-                    Id=entity.Id,
-                    Name=entity.Name,
-                    ManufacturerName = entity.BusManufacturer.Name,
-                    Type=entity.Type,
-                    SeatCapacity=entity.SeatCapacity,
-                    HasToilet=entity.HasToilet
-                });
-            }
-            return modelSummaries;
+                Id = entity.Id,
+                Name = entity.Name,
+                BusManufacturerName = entity.BusManufacturer.Name,
+                Type = entity.Type,
+                SeatCapacity = entity.SeatCapacity,
+                HasToilet = entity.HasToilet
+            });
+            return busModels;
         }
 
-        public void Update(BusModelDTO modelDTO)
+        public CommandResult Create(BusModelDTO modelDTO)
         {
-            var busModels = _busModel.Find(modelDTO.Id);
-            busModels.Name = modelDTO.Name;
-            _busModel.Update(busModels);
-            
+            try
+            {
+                var busModel = new BusModel(
+                    modelDTO.Id,
+                    modelDTO.Name,
+                    modelDTO.BusManufacturerId,
+                    modelDTO.Type,
+                    modelDTO.SeatCapacity,
+                    modelDTO.HasToilet
+                    );
+
+                _busModel.Add(busModel);
+                return CommandResult.Success(MessageProvider.CreateSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                  MessageProvider.CreateErrorMessage,
+                  ex.Message);
+            }
+          
+        }
+
+        public CommandResult Delete(BusModelDTO modelDTO)
+        {
+            try
+            {
+                if (modelDTO != null)
+                {
+                    var busModel = _busModel.Find(modelDTO.Id);
+                    _busModel.Remove(busModel);
+
+                    return CommandResult.Success(MessageProvider.DeleteSuccessMessage);
+                }
+                else
+                {
+                    return CommandResult.Error("Silinecek model bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                  MessageProvider.DeleteErrorMessage,
+                  ex.Message);
+            }
+           
+        }
+
+        public CommandResult Update(BusModelDTO modelDTO)
+        {
+            try
+            {
+                var busModels = _busModel.Find(modelDTO.Id);
+                busModels.Name = modelDTO.Name;
+                _busModel.Update(busModels);
+
+                return CommandResult.Success(MessageProvider.UpdateSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                   MessageProvider.UpdateErrorMessage,
+                   ex.Message);
+            }  
         }
     }
 }

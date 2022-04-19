@@ -21,6 +21,8 @@ namespace RebelTours.Persistence.Configurations
                 intValue => (BusType)intValue);
             builder.Property(b => b.SeatCapacity).HasColumnType("int");
             builder.Property(b => b.HasToilet).HasColumnType("bit");
+            builder.Ignore(x => x.SeatTemplate);
+
 
             builder.HasData(
                  new BusModel(1, "CityLiner", 1, BusType.Coach, 52, false) { },

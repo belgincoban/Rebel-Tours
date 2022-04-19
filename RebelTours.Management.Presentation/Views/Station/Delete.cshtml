@@ -1,9 +1,21 @@
-﻿
+﻿@using RebelTours.Management.Application
 @model StationDTO
 
 <h1 class="pb-3 mb-3 border-bottom">
-    Şehir Sil
+    İstasyon Sil
 </h1>
+@if (ViewBag.CommandResult != null)
+{
+    var result = (CommandResult)ViewBag.CommandResult;
+
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert @(result.IsSucceeded ? "alert-success" : "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
 <div class="row">
     <div class="col-12 col-md-8 col-sm-6">
         <div class="alert alert-warning">

@@ -12,5 +12,8 @@ namespace RebelTours.Management.Application.BusModels
         public BusType Type { get; set; }
         public int SeatCapacity { get; set; }
         public bool HasToilet { get; set; }
+
+        // sadece verilere değer taşıma amacımız olduğu için setleri açık oldu. 
+
     }
 }

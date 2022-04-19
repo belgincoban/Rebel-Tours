@@ -1,0 +1,61 @@
+﻿@model BusDTO
+
+<h1 class="pb-3 mb-3 border-bottom">
+    Otobüs Ekle
+</h1>
+
+@if (ViewBag.CommandResult != null)
+{
+    var result = (CommandResult)ViewBag.CommandResult;
+
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert @(result.IsSucceeded ? "alert-success" : "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<div class="row">
+
+    <div class="col-12 col-md-8 col-sm-5">
+        <form method="post" asp-action="Create" asp-controller="Bus">
+
+            <div class="mb-3">
+                <label asp-for="BusModelId">Model Seç</label>
+                <select class="form-control" asp-for="BusModelId" asp-items="ViewBag.BusModel"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="RegistrationPlate">Plaka</label>
+                <input asp-for="RegistrationPlate" class="form-control" type="text" autocomplete="off" />
+
+            </div>
+            <div>
+                <label asp-for="Year">Üretim Yıl</label>
+                <input asp-for="Year" class="form-control" type="number" autocomplete="off" />
+            </div>
+            <div class="mb-3">
+                <label class="mt-3" asp-for="SeatMapping">Otobüs Tipi</label>
+                <select class="form-control" asp-for="SeatMapping" asp-items="@Html.GetEnumSelectList<SeatingType>()"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DistanceTraveled">KM</label>
+                <input asp-for="DistanceTraveled" class="form-control" type="number" autocomplete="off" />
+            </div>
+
+            <div class="float-right">
+                <button type="submit" class="btn btn-primary">
+                    Kaydet
+                </button>
+                <a class="btn btn-secondary" asp-controller="Bus" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>

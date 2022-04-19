@@ -1,0 +1,61 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<BusSummaryDTO>
+
+@if (TempData["CommandResult"] != null)
+{
+    var resultJson = (string)TempData["CommandResult"];
+    var result = JsonConvert.DeserializeObject<CommandResult>(resultJson);
+
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="alert @(result.IsSucceeded ? "alert-success": "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-12 col-md-8">
+        <table class="table table-striped  table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Model Adı</th>
+                    <th>Plaka</th>
+                    <th>Yıl</th>
+                    <th>Otobüs Tipi</th>
+                    <th>Koltuk Sayısı</th>
+                    <th>KM</th>
+                    <th>
+                        <div class="float-right">
+                            <a class="btn btn-sm btn-primary" asp-controller="Bus" asp-action="Create">Yeni Otobüs</a>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bus in Model)
+                {
+                    <tr>
+                        <td>@bus.BusId</td>
+                        <td>@bus.BusModelName</td>
+                        <td>@bus.RegistrationPlate</td>
+                        <td>@bus.Year</td>
+                        <td>@bus.SeatMapping</td>
+                        <td>@bus.SeatCount</td>
+                        <td>@bus.DistanceTraveled</td>
+                        <td>
+                            <div class="float-right">
+                                <a class="btn btn-sm btn-outline-dark" asp-controller="Bus" asp-action="Update" asp-route-id="@bus.BusId">Düzenle</a>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="Bus" asp-action="Delete" asp-route-id="@bus.BusId">Sil</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

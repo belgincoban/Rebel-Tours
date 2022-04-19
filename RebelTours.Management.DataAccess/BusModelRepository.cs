@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RebelTours.Domain;
 using RebelTours.Management.Application.Repositories;
+using RebelTours.Management.DataAccess.Extensions;
 using RebelTours.Persistence;
 using System;
 using System.Collections.Generic;
@@ -24,22 +25,18 @@ namespace RebelTours.Management.DataAccess
             _context.SaveChanges();
         }
 
-        public BusModel Find(int id)
+        public BusModel Find(int id, params string[] includings)
         {
-            return _context.BusModels.Find(id);
+            return _context.BusModels
+                  .IncludeMultiple(includings)
+                  .SingleOrDefault(entity => entity.Id == id);
+
         }
 
-        public IEnumerable<BusModel> GetAll()
-        {
-            return GetAll(false);
-        }
-        public IEnumerable<BusModel> GetAll(bool includeManufacturer)
+        public IEnumerable<BusModel> GetAll(params string[] includings)
         {
             var dbQuery = _context.BusModels.AsQueryable();
-            if (includeManufacturer)
-            {
-                dbQuery = dbQuery.Include(bm => bm.BusManufacturer);
-            }
+            dbQuery = dbQuery.IncludeMultiple(includings);
             return dbQuery.ToList();
         }
 

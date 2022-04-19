@@ -2,6 +2,7 @@
 using RebelTours.Management.Application.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RebelTours.Management.Application.Cities
@@ -9,6 +10,7 @@ namespace RebelTours.Management.Application.Cities
     public class CityService : ICityService
     {
         //esas işi yapıcak sınıf
+        private const string CreateErrorMessage = "Kaydetme aşamasında bir hata meydana geldi";
 
         private readonly ICityRepository _cityRepository;
         public CityService(ICityRepository cityRepository)
@@ -18,15 +20,7 @@ namespace RebelTours.Management.Application.Cities
         // Application katmanındaki CUD (Create, Update, Delete) metodları void olmayacak
         // 1. Validation yapmam gerekir
         // 2. DB'de bir hata meydana geldiyse bunu try-catch ile kontrol altına almam gerekir
-        public void Create(CityDTO city)
-        {
-            var cityEntity = new City()
-            {
-                Name = city.Name
-            };
-            _cityRepository.Add(cityEntity);
-        }
-
+  
 
         public IEnumerable<CityDTO> GetAll()
         {
@@ -66,25 +60,65 @@ namespace RebelTours.Management.Application.Cities
             }
         }
 
-        public void Update(CityDTO cityDTO)
+ 
+        public CommandResult Create(CityDTO city)
         {
-            var city = _cityRepository.Find(cityDTO.Id);
-            city.Name = cityDTO.Name;
-            _cityRepository.Update(city);
-        }
-
-        public void Delete(CityDTO cityDTO)
-        {
-
-            if (cityDTO != null)
+            try
             {
-                var city = new City()
+                if (string.IsNullOrWhiteSpace(city.Name))
                 {
-                    Id = cityDTO.Id,
-                    Name = cityDTO.Name
+                    return CommandResult.Error("İsim boş geçilemez");
+                }
+
+                var cityRep = new City()
+                {
+                    Name = city.Name
                 };
-                _cityRepository.Remove(city);
+
+                _cityRepository.Add(cityRep);
+
+                return CommandResult.Success(MessageProvider.CityCreateSuccessMessage);
+            }
+            catch (Exception)
+            {
+                return CommandResult.Error(CreateErrorMessage);
             }
         }
+
+        public CommandResult Update(CityDTO cityDTO)
+        {
+            try
+            {
+                var cityEntities = _cityRepository.Find(cityDTO.Id);
+
+                cityEntities.Name = cityDTO.Name;
+
+                _cityRepository.Update(cityEntities);
+
+                return CommandResult.Success(MessageProvider.UpdateSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(MessageProvider.UpdateErrorMessage,ex.Message);
+            }
+        }
+
+        public CommandResult Delete(CityDTO cityDTO)
+        {
+
+            try
+            {
+                var entityCity = _cityRepository.Find(cityDTO.Id);
+                _cityRepository.Remove(entityCity);
+
+                return CommandResult.Success(MessageProvider.DeleteSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                   MessageProvider.DeleteErrorMessage,ex.Message);
+            }
+        }
+
     }
 }

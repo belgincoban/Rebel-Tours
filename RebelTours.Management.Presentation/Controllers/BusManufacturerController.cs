@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RebelTours.Management.Application.BusManufacturers;
 using System;
 using System.Collections.Generic;
@@ -27,17 +28,19 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Create(BusManufacturerDTO manufacturerDTO)
         {
-            try
+            var result = _busManuFacturerService.Create(manufacturerDTO);
+            
+            if (result.IsSucceeded)
             {
-                _busManuFacturerService.Create(manufacturerDTO);
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            else
             {
-                ViewBag.ErrorMessage = "Kaydetme sırasında bir hata meydana geldi";
+                ViewBag.CommandResult = result;
                 return View();
             }
-
         }
         public IActionResult Update(int id)
         {
@@ -48,16 +51,18 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Update(BusManufacturerDTO busManufacturer)
         {
-            try
+            var result = _busManuFacturerService.Update(busManufacturer);
+           
+            if (result.IsSucceeded)
             {
-                _busManuFacturerService.Update(busManufacturer);
-
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            else
             {
-                ViewBag.ErrorMessage = "Güncelleme sırasında bir hata meydana geldi";
-                return View(busManufacturer);
+                ViewBag.CommandResult = result;
+                return View();
             }
         }
 
@@ -71,17 +76,19 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Delete(BusManufacturerDTO busManufacturer)
         {
-            if (busManufacturer != null)
-            {
-                _busManuFacturerService.Delete(busManufacturer);
-            }
-            return RedirectToAction("Index");
+           var result= _busManuFacturerService.Delete(busManufacturer);
 
-        }
-        public IActionResult GetById(int id)
-        {
-            var busManufacturer = _busManuFacturerService.GetById(id);
-            return View(busManufacturer);
+            if (result.IsSucceeded)
+            {
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.CommandResult = result;
+                return View();
+            }
         }
     }
 }

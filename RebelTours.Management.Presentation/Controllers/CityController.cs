@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RebelTours.Management.Application.Cities;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace RebelTours.Management.Presentation.Controllers
             _cityService = cityService;
         }
 
+        #region MyRegion
         //public IActionResult Index()
         //{
         //    var dbContext = new RebelToursContext();
@@ -26,13 +28,16 @@ namespace RebelTours.Management.Presentation.Controllers
         //    return View(cities);
         //}
 
+        #endregion
         public IActionResult Index()
         {
+            #region Service
             //Service
             //Aslında çok genel bir ifade, ama yinede Business/Application
             //katmanında işlemlerin yapıldığı nesnelere verilen isim
             //CityService
-            //StationService
+            //StationService 
+            #endregion
 
             var cities = _cityService.GetAll();
             return View(cities);
@@ -82,36 +87,55 @@ namespace RebelTours.Management.Presentation.Controllers
         //} 
         #endregion
 
+        #region Info
         //hiçbir şey yazmazsan herhangi bir metodu kaarşılayabilir.(sınırlandırma yok).
         //aynı metot iismini kullanıyorsam en az biri bir http metotla işaretlenmesi gerekiyor
-        //dynamic runtime 'da ne verirsek onu oluşturan nesne.
+        //dynamic runtime 'da ne verirsek onu oluşturan nesne. 
+        #endregion
         [HttpPost]
         public IActionResult Create(CityDTO cityDTO)
         {
-            try
+            var result = _cityService.Create(cityDTO);
+
+            if (result.IsSucceeded)
             {
-                _cityService.Create(cityDTO);
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
                 return RedirectToAction("Index", "City");
             }
-            catch (Exception)
+            else
             {
-
-                // ViewBag isimli yapı, View'a ekstra bilgi/veri taşımak için kullanılan bir koleksiyon
-                // ViewBag'in tipi dynamic olarak belirlenmiştir. Dynamic tipi DotNet içerisinde özel
-                // esnek bir tiptir. Dynamic tipinin tuttuğu değer, veri, nesne veya o nesnenin property'leri
-                // runtime'da belli olur.
-
-                // ViewBag ile ViewData aslında arka tarafta aynı nesneyi işaret eder
-                // İkisi arasında yazım şekli farkı var 
-
-                // ViewBag, dynamic tipinde
-                ViewBag.ErrorMessage = "Kaydetme sırasında bir hata meydana geldi";
-
-                // ViewData dictionary tipinde
-                //ViewData["ErrorMessage"] = "Kaydetme sırasında bir hata meydana geldi";
+                ViewBag.CommandResult = result;
                 return View();
             }
 
+            #region try-catch
+            //try
+            //{
+            //    _cityService.Create(cityDTO);
+            //    return RedirectToAction("Index");
+            //}
+            //catch (Exception)
+            //{
+
+            //    #region ViewBag
+            //    // ViewBag isimli yapı, View'a ekstra bilgi/veri taşımak için kullanılan bir koleksiyon
+            //    // ViewBag'in tipi dynamic olarak belirlenmiştir. Dynamic tipi DotNet içerisinde özel
+            //    // esnek bir tiptir. Dynamic tipinin tuttuğu değer, veri, nesne veya o nesnenin property'leri
+            //    // runtime'da belli olur.
+
+            //    // ViewBag ile ViewData aslında arka tarafta aynı nesneyi işaret eder
+            //    // İkisi arasında yazım şekli farkı var 
+
+            //    // ViewBag, dynamic tipinde 
+            //    #endregion
+            //    ViewBag.ErrorMessage = "Kaydetme sırasında bir hata meydana geldi";
+
+            //    // ViewData dictionary tipinde
+            //    //ViewData["ErrorMessage"] = "Kaydetme sırasında bir hata meydana geldi";
+            //    return View();
+            //} 
+            #endregion
         }
 
         public IActionResult Update(int id)
@@ -123,17 +147,18 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Update(CityDTO city)
         {
-            try
-            {
-                _cityService.Update(city);
+            var result=_cityService.Update(city);
 
+            if (result.IsSucceeded)
+            {
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            else
             {
-                ViewBag.ErrorMessage = "Güncelleme sırasında bir hata meydana geldi";
-
-                return View(city);
+                ViewBag.CommandResult = result;
+                return View();
             }
         }
 
@@ -157,11 +182,19 @@ namespace RebelTours.Management.Presentation.Controllers
         [HttpPost]
         public IActionResult Delete(CityDTO city)
         {
-            if (city !=null)
+            var result=_cityService.Delete(city);
+
+            if (result.IsSucceeded)
             {
-                _cityService.Delete(city);
+                var resultJson = JsonConvert.SerializeObject(result);
+                TempData["CommandResult"] = resultJson;
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.CommandResult = result;
+                return View();
+            }
 
         }
         public IActionResult GetById(int id)
@@ -169,6 +202,8 @@ namespace RebelTours.Management.Presentation.Controllers
             var city = _cityService.GetById(id);
             return View(city);
         }
+
+        //tempData actionlar arası veri taşımamızı sağlayan yapılardır.
 
     }
 }

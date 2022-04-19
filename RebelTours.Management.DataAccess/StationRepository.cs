@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RebelTours.Domain;
 using RebelTours.Management.Application.Repositories;
+using RebelTours.Management.DataAccess.Extensions;
 using RebelTours.Persistence;
 using System;
 using System.Collections.Generic;
@@ -24,22 +25,30 @@ namespace RebelTours.Management.DataAccess
             _context.SaveChanges();
         }
 
-        public Station Find(int id)
-        {
-            return _context.Stations.Find(id);
-        }
-
-        public IEnumerable<Station> GetAll()
-        {
-            return GetAll(false);
-        }
-        public IEnumerable<Station> GetAll(bool includeCity)
+        public Station Find(int id, params string[] includings)
         {
             var dbQuery = _context.Stations.AsQueryable();
-            if (includeCity)
-            {
-                dbQuery = dbQuery.Include(s => s.City);
-            }
+            dbQuery = dbQuery.IncludeMultiple(includings);
+            
+            return dbQuery.SingleOrDefault(entity=>entity.Id==id);
+        }
+
+        public IEnumerable<Station> GetAll(params string[] includings)
+        {
+            var dbQuery = _context.Stations.AsQueryable();
+            dbQuery = dbQuery.IncludeMultiple(includings);
+            //if (includings !=null)
+            //{
+            //    foreach (var navProperty in includings)
+            //    {
+            //        dbQuery = dbQuery.Include(navProperty);
+            //    }
+            //}
+            //if (includeCity)
+            //{
+            //    dbQuery = dbQuery.Include(s => s.City);
+            //}
+
             return dbQuery.ToList();
         }
 

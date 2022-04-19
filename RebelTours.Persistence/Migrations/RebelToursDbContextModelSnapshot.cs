@@ -18,6 +18,66 @@ namespace RebelTours.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("RebelTours.Domain.Bus", b =>
+                {
+                    b.Property<int>("BusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BusModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DistanceTraveled")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RegistrationPlate")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("SeatMapping")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("BusId");
+
+                    b.HasIndex("BusModelId");
+
+                    b.ToTable("Buses");
+
+                    b.HasData(
+                        new
+                        {
+                            BusId = 1,
+                            BusModelId = 2,
+                            DistanceTraveled = 10000,
+                            RegistrationPlate = "14-AA-14",
+                            SeatMapping = 1,
+                            Year = 2012
+                        },
+                        new
+                        {
+                            BusId = 2,
+                            BusModelId = 3,
+                            DistanceTraveled = 20000,
+                            RegistrationPlate = "24-BB-24",
+                            SeatMapping = 1,
+                            Year = 2013
+                        },
+                        new
+                        {
+                            BusId = 3,
+                            BusModelId = 3,
+                            DistanceTraveled = 30000,
+                            RegistrationPlate = "34-CC-34",
+                            SeatMapping = 1,
+                            Year = 2014
+                        });
+                });
+
             modelBuilder.Entity("RebelTours.Domain.BusManufacturer", b =>
                 {
                     b.Property<int>("Id")
@@ -198,6 +258,17 @@ namespace RebelTours.Persistence.Migrations
                             CityId = 3,
                             Name = "Dudullu"
                         });
+                });
+
+            modelBuilder.Entity("RebelTours.Domain.Bus", b =>
+                {
+                    b.HasOne("RebelTours.Domain.BusModel", "BusModel")
+                        .WithMany()
+                        .HasForeignKey("BusModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusModel");
                 });
 
             modelBuilder.Entity("RebelTours.Domain.BusModel", b =>

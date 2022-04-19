@@ -1,25 +1,41 @@
-﻿@model IEnumerable<BusManufacturerDTO>
+﻿@using Newtonsoft.Json
+@using RebelTours.Management.Application
 
-    <h1 class="pb-3 mb-3 border-bottom">
-        Markalar
-    </h1>
-    <div class="col-12 col-md-8">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Marka Adı</th>
-                    <th>
-                        <div class="float-right mb-3">
-                            <a class="btn btn-sm btn-info" asp-action="Create" asp-controller="BusManufacturer">Yeni Marka</a>
-                        </div>
+@model IEnumerable<BusManufacturerDTO>
 
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var entity in Model)
-                {
+@if (TempData["CommandResult"] != null)
+{
+    var resultJson = (string)TempData["CommandResult"];
+    var result = JsonConvert.DeserializeObject<CommandResult>(resultJson);
+
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div class="alert @(result.IsSucceeded ? "alert-success": "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
+<h1 class="pb-3 mb-3 border-bottom">
+    Markalar
+</h1>
+<div class="col-12 col-md-8">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Marka Adı</th>
+                <th>
+                    <div class="float-right mb-3">
+                        <a class="btn btn-sm btn-info" asp-action="Create" asp-controller="BusManufacturer">Yeni Marka</a>
+                    </div>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entity in Model)
+            {
                 <tr>
                     <td>@entity.Id</td>
                     <td>@entity.Name</td>
@@ -30,7 +46,7 @@
                         </div>
                     </td>
                 </tr>
-                }
+            }
 
-            </tbody>
-    </div>
+        </tbody>
+</div>

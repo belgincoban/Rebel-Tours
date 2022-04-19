@@ -1,34 +1,49 @@
 ﻿@model StationDTO
 
-    <h1 class="pb-3 mb-3 border-bottom">
-        İstasyon Ekle
-    </h1>
+<h1 class="pb-3 mb-3 border-bottom">
+    İstasyon Ekle
+</h1>
+
+@if (ViewBag.CommandResult != null)
+{
+    var result = (CommandResult)ViewBag.CommandResult;
+
     <div class="row">
-        <div class="col-12 col-md-8">
-            <form method="post" asp-action="Create" asp-controller="Station">
-
-                <label class="form-label" for="Name">İstasyon Adı</label>
-                <input type="text" name="Name" class="form-control mb-3" />
-
-                @*@if (ViewBag.CityList != null)
-                    {
-                        <select asp-for="CityId" asp-items="ViewBag.CityList" class="form-select" name="CityId"></select>
-                    }
-                      <br />*@
-                <div class="mb-3">
-                    <label asp-for="CityId">Şehir</label>
-                    <select asp-for="CityId" asp-items="ViewBag.Cities" class="form-control"></select>
-                </div>
-
-                <div class="float-right">
-
-                    <button type="submit" class="btn btn-primary">
-                        Kaydet
-                    </button>
-                    <a class="btn btn-secondary" asp-controller="City" asp-action="Index">
-                        İptal
-                    </a>
-                </div>
-            </form>
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert @(result.IsSucceeded ? "alert-success" : "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
         </div>
     </div>
+}
+
+
+<div class="row">
+    <div class="col-12 col-md-8">
+        <form method="post" asp-action="Create" asp-controller="Station">
+
+            <label class="form-label" for="Name">İstasyon Adı</label>
+            <input type="text" name="Name" class="form-control mb-3" />
+
+            @*@if (ViewBag.CityList != null)
+                {
+                    <select asp-for="CityId" asp-items="ViewBag.CityList" class="form-select" name="CityId"></select>
+                }
+                  <br />*@
+            <div class="mb-3">
+                <label asp-for="CityId">Şehir</label>
+                <select asp-for="CityId" asp-items="ViewBag.Cities" class="form-control"></select>
+            </div>
+
+            <div class="float-right">
+
+                <button type="submit" class="btn btn-primary">
+                    Kaydet
+                </button>
+                <a class="btn btn-secondary" asp-controller="City" asp-action="Index">
+                    İptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RebelTours.Management.Application.Buses;
 using RebelTours.Management.Application.BusManufacturers;
 using RebelTours.Management.Application.BusModels;
 using RebelTours.Management.Application.Cities;
@@ -36,12 +37,19 @@ namespace RebelTours.Management.Presentation
             //composition root--Bu interface'in yerine bu sýnýf çalýþtýrýlacak
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<ICityRepository, CityRepository>();
+
             services.AddTransient<IStationService, StationService>();
             services.AddTransient<IStationRepository, StationRepository>();
+
             services.AddTransient<IBusManufacturerRepository, BusManufacturerRepository>();
             services.AddTransient<IBusManufacturerService, BusManufacturerService>();
+            
             services.AddTransient<IBusModelRepository, BusModelRepository>();
             services.AddTransient<IBusModelService, BusModelService>();
+           
+            services.AddTransient<IBusService, BusService>();
+            services.AddTransient<IBusRepository, BusRepository>();
+
             services.AddTransient<RebelToursDbContext>();
         }
 

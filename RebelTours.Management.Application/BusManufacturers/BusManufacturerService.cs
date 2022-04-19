@@ -3,6 +3,7 @@ using RebelTours.Management.Application.Cities;
 using RebelTours.Management.Application.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RebelTours.Management.Application.BusManufacturers
@@ -16,34 +17,15 @@ namespace RebelTours.Management.Application.BusManufacturers
             _manufacturerRepository = manufacturerRepository;
         }
 
-        public void Create(BusManufacturerDTO busManufacturer)
-        {
-            var manuFacturer = new BusManufacturer(busManufacturer.Id,busManufacturer.Name);
-            _manufacturerRepository.Add(manuFacturer);
-        }
-
-        public void Delete(BusManufacturerDTO busManufacturerDTO)
-        {
-            if (busManufacturerDTO != null)
-            {
-                var busManufacturer = new BusManufacturer(busManufacturerDTO.Id, busManufacturerDTO.Name);
-                _manufacturerRepository.Remove(busManufacturer);
-            }
-        }
-
         public IEnumerable<BusManufacturerDTO> GetAll()
         {
-            var manufacturer = _manufacturerRepository.GetAll();
-            var manufacturerDTOs = new List<BusManufacturerDTO>();
-            foreach (var entity in manufacturer)
+            var manufacturerEntities = _manufacturerRepository.GetAll();
+            var busManufacturers = manufacturerEntities.Select(entity => new BusManufacturerDTO
             {
-                manufacturerDTOs.Add(new BusManufacturerDTO
-                {
-                    Id = entity.Id,
-                    Name = entity.Name
-                });
-            }
-            return manufacturerDTOs;
+                Id = entity.Id,
+                Name = entity.Name
+            });
+            return busManufacturers;
         }
 
         public BusManufacturerDTO GetById(int id)
@@ -66,11 +48,67 @@ namespace RebelTours.Management.Application.BusManufacturers
             }
         }
 
-        public void Update(BusManufacturerDTO busManufacturer)
+        public CommandResult Create(BusManufacturerDTO busManufacturer)
         {
-            var manuFacturer = _manufacturerRepository.Find(busManufacturer.Id);
-            manuFacturer.Name = busManufacturer.Name;
-            _manufacturerRepository.Update(manuFacturer);
+            try
+            {
+                var manuFacturer = new BusManufacturer(
+                    busManufacturer.Id,
+                    busManufacturer.Name);
+                _manufacturerRepository.Add(manuFacturer);
+
+                return CommandResult.Success(MessageProvider.CreateSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                 MessageProvider.CreateErrorMessage,
+                 ex.Message);
+            }
+        }
+
+        public CommandResult Delete(BusManufacturerDTO busManufacturerDTO)
+        {
+            try
+            {
+                if (busManufacturerDTO != null)
+                {
+                    var busManufacturer = new BusManufacturer(busManufacturerDTO.Id, busManufacturerDTO.Name);
+                    _manufacturerRepository.Remove(busManufacturer);
+
+                    return CommandResult.Success(MessageProvider.DeleteSuccessMessage);
+                }
+                else
+                {
+                    return CommandResult.Error("Silinecek marka bulunamadı");
+                }
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                 MessageProvider.DeleteErrorMessage,
+                 ex.Message);
+            }
+         
+        }
+
+        public CommandResult Update(BusManufacturerDTO busManufacturer)
+        {
+            try
+            {
+                var manufacturer = _manufacturerRepository.Find(busManufacturer.Id);
+                manufacturer.Name = busManufacturer.Name;
+                _manufacturerRepository.Update(manufacturer);
+
+                return CommandResult.Success(MessageProvider.UpdateSuccessMessage);
+            }
+            catch (Exception ex)
+            {
+                return CommandResult.Error(
+                  MessageProvider.UpdateErrorMessage,
+                  ex.Message);
+            }
+          
         }
     }
 }

@@ -3,6 +3,19 @@
 <h1 class="pb-3 mb-3 border-bottom">
     Model Ekle
 </h1>
+@if (ViewBag.CommandResult != null)
+{
+    var result = (CommandResult)ViewBag.CommandResult;
+
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6">
+            <div class="alert @(result.IsSucceeded ? "alert-success" : "alert-danger")">
+                @(result.Messages.Any() ? result.Messages.First() : "Hata")
+            </div>
+        </div>
+    </div>
+}
+
 <div class="row">
     <div class="col-12 col-md-8">
         <form method="post" asp-action="Create" asp-controller="BusModel">
@@ -12,7 +25,7 @@
 
             <div class="mb-3">
                 <label asp-for="BusManufacturerId">Marka</label>
-                <select asp-for="BusManufacturerId" asp-items="ViewBag.manufacturies" class="form-control"></select>
+                <select asp-for="BusManufacturerId" asp-items="ViewBag.Manufacturers" class="form-control"></select>
             </div>
 
             <label class="form-label mb-3" for="BusType">Türü</label>
